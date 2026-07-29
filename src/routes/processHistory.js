@@ -33,10 +33,14 @@ export async function processHistoryRoute(env) {
       throw new Error("Classification did not return a category.");
     }
 
-    await withRetry(
+    const applyResult = await withRetry(
       () => applyCategory(env, { messageId: email.id, category, markRead: true }),
       { retries: RETRY_ATTEMPTS, delayMs: RETRY_DELAY_MS }
     );
+
+    if (!applyResult.status || applyResult.status >= 300) {
+      throw new Error(`apply-category failed with status ${applyResult.status}`);
+    }
 
     return "processed";
   }, CONCURRENCY);
