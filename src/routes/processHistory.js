@@ -1,7 +1,7 @@
 import { listUnprocessedEmails, classifyEmail, applyCategory } from "../services/outlookClient.js";
 import { withRetry } from "../services/retry.js";
 import { processQueue } from "../services/queue.js";
-import { BATCH_LIMIT, RETRY_ATTEMPTS, RETRY_DELAY_MS } from "../config/constants.js";
+import { BATCH_LIMIT, CONCURRENCY, RETRY_ATTEMPTS, RETRY_DELAY_MS } from "../config/constants.js";
 
 // POST /process-history
 // Processes all unread emails in the mailbox (up to BATCH_LIMIT per call),
@@ -39,7 +39,7 @@ export async function processHistoryRoute(env) {
     );
 
     return "processed";
-  });
+  }, CONCURRENCY);
 
   const durationSeconds = ((Date.now() - start) / 1000).toFixed(1);
 
