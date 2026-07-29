@@ -24,7 +24,7 @@ export async function processHistoryRoute(env) {
     }
 
     const classifyResult = await withRetry(
-      () => classifyEmail(env, { subject: email.subject, body: email.body }),
+      () => classifyEmail(env, { subject: email.subject, body: (email.body || "").slice(0, 3000) }),
       { retries: RETRY_ATTEMPTS, delayMs: RETRY_DELAY_MS }
     );
 
