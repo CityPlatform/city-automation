@@ -33,7 +33,9 @@ export async function processHistoryRoute(env) {
 
     const category = classifyResult?.data?.data?.category;
     if (!category) {
-      throw new Error("Classification did not return a category.");
+      throw new Error(
+        `Classification did not return a category. Detail: ${JSON.stringify(classifyResult).slice(0, 300)}`
+      );
     }
 
     const applyResult = await withRetry(
