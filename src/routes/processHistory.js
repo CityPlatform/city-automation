@@ -31,7 +31,8 @@ export async function processHistoryRoute(env) {
         subject: email.subject,
         body: (email.body || "").slice(0, 3000),
         from: email.address,
-        categories: email.categories ?? []
+        categories: email.categories ?? [],
+        headers: email.headers ?? {}
       }),
       { retries: RETRY_ATTEMPTS, delayMs: RETRY_DELAY_MS }
     );

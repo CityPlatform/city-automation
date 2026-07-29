@@ -19,13 +19,13 @@ export async function processLatest(env) {
   return response.json();
 }
 
-export async function classifyEmail(env, { subject, body }) {
+export async function classifyEmail(env, { subject, body, from, categories, headers }) {
   const response = await env.CITY_OUTLOOK.fetch(
     "https://internal/analyze-email",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ subject, body })
+      body: JSON.stringify({ subject, body, from, categories, headers })
     }
   );
   return response.json();
